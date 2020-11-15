@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnCrystalOre : MonoBehaviour
+public class SpawnEnemy : MonoBehaviour
 {
-    public GameObject crystalOre;
+    [SerializeField] private HealthBar healthBar;
+    [SerializeField] private EnemyHealth health;
+    Health enemyHealth;
+
+    public GameObject enemy;
     private bool isSpawn = false;
+
+    private void Start()
+    {
+        
+    }
 
     void Update()
     {
@@ -20,9 +29,9 @@ public class SpawnCrystalOre : MonoBehaviour
 
         if (!isSpawn)
         {
-            CrystalOre crystalOreObj = ObjectPooler.Instance.GetObject();
-            crystalOreObj.transform.position = pos;
-            crystalOreObj.gameObject.SetActive(true);
+            EnemyHealth enemyObj = EnemyPooler.Instance.GetObject();
+            enemyObj.transform.position = pos;
+            enemyObj.gameObject.SetActive(true);
             isSpawn = true;
             StartCoroutine(Delay());
         }
@@ -30,7 +39,7 @@ public class SpawnCrystalOre : MonoBehaviour
 
     IEnumerator Delay()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         isSpawn = false;
     }
 }

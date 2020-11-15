@@ -11,18 +11,22 @@ public class Weapon : MonoBehaviour
 
     public PlayerAttack playerAttack;
 
+    #region TextForEquipmentPanel
     [Header("Text for Equipment Panel")]
-    public Text levelText;
-    public Text attackValueText;
-    public Text critRateText;
+    [SerializeField] private Text levelText;
+    [SerializeField] private Text attackValueText;
+    [SerializeField] private Text critRateText;
+    #endregion
 
+    #region TextForEnhancePanel
     [Header("Text for Enhance Panel")]
-    public Text enhanceLevelText;
-    public Text crystalOreAmountText;
-    public Text goldAmountText;
+    [SerializeField] private Text enhanceLevelText;
+    [SerializeField] private Text crystalOreAmountText;
+    [SerializeField] private Text goldAmountText;
     public int crystalOreAmount;
     public int goldAmount;
     private int crystalOreToGold;
+    #endregion
 
     void Start()
     {
@@ -81,6 +85,10 @@ public class Weapon : MonoBehaviour
                 goldAmount = 15000;
                 crystalOreToGold = crystalOreAmount * 500;
                 SetValueMaterialAmount();
+                break;
+            default:
+                crystalOreAmount.ToString("Level Max");
+                goldAmount.ToString("Level Max");
                 break;
         }
     }

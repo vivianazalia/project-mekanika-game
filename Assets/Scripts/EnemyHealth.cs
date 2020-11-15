@@ -5,22 +5,35 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public PlayerAttack damageAtk;
+    [SerializeField] private HealthBar healthBar;
+    Health enemyHealth;
+
+    private PlayerAttack damageAtk;
     public int health = 100;
 
     public Slider sliderHealth;
     public Image fillSlider;
 
+    SpriteRenderer fillBar;
+
     void Start()
     {
-        sliderHealth.maxValue = health;
+        damageAtk = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAttack>();
+
+        fillBar = transform.Find("HealthBar").Find("Fill").Find("SpriteFill").GetComponent<SpriteRenderer>();
+
+        enemyHealth = new Health(health, fillBar);
+
+        healthBar.Setup(enemyHealth);
+
+        //sliderHealth.maxValue = health;
     }
 
     void Update()
     {
-        sliderHealth.value = health;
+        //sliderHealth.value = health;
 
-        if(health < 50)
+        /*if(health < 50)
         {
             fillSlider.color = Color.yellow;
         }
@@ -28,11 +41,17 @@ public class EnemyHealth : MonoBehaviour
         if(health < 25)
         {
             fillSlider.color = Color.red;
-        }
+        }*/
 
-        if (health <= 0)
+        enemyHealth.GetColor();
+        Debug.Log(enemyHealth.GetHealthPercentage());
+
+        if (enemyHealth.GetHealthPercentage() <= 0)
         {
-            Destroy(gameObject);
+            EnemyPooler.Instance.ReturnToQueue(this);
+            gameObject.SetActive(false);
+            Debug.Log(EnemyPooler.Instance.GetCount());
+            //Destroy(gameObject);
         }
     }
 
@@ -40,7 +59,8 @@ public class EnemyHealth : MonoBehaviour
     {
         if(collision.gameObject.tag == "Bullet")
         {
-            health -= damageAtk.damage;
+            enemyHealth.GetDamage(damageAtk.damage);
+            //health -= damageAtk.damage;
         }
     }
 }

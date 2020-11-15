@@ -8,44 +8,62 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject panelGameOver;
-    public GameObject panelWin;
+    #region win-lose
+    [Header("Win Lose Panel")]
+    [SerializeField] private GameObject panelGameOver;
+    [SerializeField] public GameObject panelWin;
+    #endregion
+
+    #region health
     private PlayerHealth playerHealth;
     private PlayerAttack player;
     private EnemyHealth enemyHealth;
+    #endregion
 
-    public Image skillImg;
-    public Sprite cooldownSkillSprite;
-    public Sprite ActiveSkillSprite;
-
+    #region skill
+    [Header("Skill ")]
+    [SerializeField] private Image skillImg;
+    [SerializeField] private Sprite cooldownSkillSprite;
+    [SerializeField] private Sprite activeSkillSprite;
+    [SerializeField] private Text cooldownTimeText;
     private float cooldownTime;
-    public Text cooldownTimeText;
+    #endregion
 
+    #region resourceItem
+    [Header("Resource Item")]
     public int amountCrystalOre;
-    public Text amountCrystalOreText;
+    [SerializeField] private Text amountCrystalOreText; 
 
     public int amountGold;
-    public Text amountGoldText;
+    [SerializeField] private Text amountGoldText;
+    #endregion
 
-    public GameObject panelStatus;
-    public Text atkInfoText;
-    public Text critRateInfoText;
-    public Text healthPlayerText;
-    public GameObject panelPause;
+    #region infoStatus
+    [Header("Info Status")]
+    [SerializeField] private GameObject panelStatus;
+    [SerializeField] private Text atkInfoText;
+    [SerializeField] private Text critRateInfoText;
+    [SerializeField] private Text healthPlayerText;
+    [SerializeField] private GameObject panelPause;
+    #endregion
+
     private bool isPaused = false;
 
-    public GameObject panelEquipment;
-    public GameObject panelEnhance;
+    #region enhance
+    [Header("Enhance")]
+    [SerializeField] private GameObject panelEquipment;
+    [SerializeField] private GameObject panelEnhance;
     private bool enhancePanelActive = false;
     private bool equipmentPanelActive = false;
 
-    public Weapon weapon;
-    public Image enhanceButton;
+    [SerializeField] private Weapon weapon;
+    [SerializeField] private Image enhanceButton;
     private bool canEnhance = false;
     private int level;
     private int attack;
     private int critRate;
     private int n = 1;
+    #endregion
 
     void Awake()
     {
@@ -61,7 +79,7 @@ public class GameManager : MonoBehaviour
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAttack>();
 
-        enemyHealth = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyHealth>();
+        //enemyHealth = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyHealth>();
 
         level = weapon.level;
         attack = weapon.attack;
@@ -88,11 +106,11 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
         }
 
-        if(enemyHealth.health <= 0)
+        /*if(enemyHealth.health <= 0)
         {
             panelWin.gameObject.SetActive(true);
             Time.timeScale = 0;
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -117,7 +135,7 @@ public class GameManager : MonoBehaviour
     {
         if (Mathf.RoundToInt(cooldownTime) <= 0 && !player.isCooldown)
         {
-            skillImg.sprite = ActiveSkillSprite;
+            skillImg.sprite = activeSkillSprite;
             cooldownTimeText.gameObject.SetActive(false);
         }
 
@@ -216,14 +234,12 @@ public class GameManager : MonoBehaviour
     {
         if (!canEnhance)
         {
-            enhanceButton.color = new Color(195, 195, 195, 196);
             enhanceButton.GetComponent<Button>().interactable = false;
         }
 
         if(amountCrystalOre >= weapon.crystalOreAmount && amountGold >= weapon.goldAmount)
         {
             canEnhance = true;
-            enhanceButton.color = new Color(255, 255, 255, 255);
             enhanceButton.GetComponent<Button>().interactable = true;
         }
         else
@@ -238,11 +254,14 @@ public class GameManager : MonoBehaviour
         {
             level++;
             weapon.level = level;
+
             attack += 30 * n;
             weapon.attack = attack;
             player.damage = attack;
+
             critRate += 5 * n;
             weapon.critRate = critRate;
+
             n++;
 
             amountGold -= weapon.goldAmount;
