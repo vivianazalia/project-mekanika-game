@@ -39,6 +39,7 @@ public class EnemyPooler : MonoBehaviour
 
     public void ReturnToQueue(EnemyHealth enemy)
     {
+        enemy.FullHealth();
         queueEnemy.Enqueue(enemy);
     }
 

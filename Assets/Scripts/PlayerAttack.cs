@@ -25,8 +25,6 @@ public class PlayerAttack : MonoBehaviour
         {
             DoubleDamage();
         }
-
-        
     }
 
     void Shoot()
@@ -42,7 +40,6 @@ public class PlayerAttack : MonoBehaviour
 
             StartCoroutine(DelayShot());
         }
-        
     }
 
     public void DoubleDamage()
@@ -57,14 +54,14 @@ public class PlayerAttack : MonoBehaviour
 
     IEnumerator DelayShot()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.3f);
 
         hasShot = false;
     }
 
     IEnumerator CooldownDoubleDamage()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
 
         isCooldown = true;
         damage /= 2;

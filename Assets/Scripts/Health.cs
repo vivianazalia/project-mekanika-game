@@ -55,4 +55,11 @@ public class Health
             health = 0;
         }
     }
+
+    public float GetMaxHealth()
+    {
+        health = maxHealth;
+        imageFill.color = SetColor(Color.green);
+        return health;
+    }
 }
